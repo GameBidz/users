@@ -8,7 +8,7 @@ load_dotenv()
 DB_USER = os.environ['DATABASE_USER']
 DB_PASS = os.environ['DATABASE_PASS']
 DB_HOST = os.environ['DATABASE_HOST']
-DB_NAME = os.environ['DATABASE_NAME']
+
 
 def create_connection() -> MongoClient:
     
