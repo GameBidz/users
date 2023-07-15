@@ -1,7 +1,8 @@
-from models.user_model import User
-from config.database import create_connection
+from app.models.user_model import User
+from app.config.database import create_connection
 from dotenv import load_dotenv
 import os
+from bson.objectid import ObjectId
 
 load_dotenv()
 
@@ -23,7 +24,7 @@ class UserRepository:
             users = db['users']
 
             #Insertar el nuevo usuario
-            users.insert_one(new_user.to_dict, session=session)
+            user = users.insert_one(new_user.to_dict(), session=session).inserted_id
 
             #Confirmar la transacción
             session.commit_transaction()
@@ -31,7 +32,7 @@ class UserRepository:
             #Cerrar la conexión
             client.close()
 
-            return new_user
+            return user
     
 
     def get_user_by_email(self, email:str):
@@ -41,11 +42,14 @@ class UserRepository:
         user = users.find_one({"email": email})
         return user
 
-    def edit_user(self, user: User):
+    def edit_user(self, id: str,  user: User):
         client = create_connection()
         db = client[DB_NAME]
         users = db['users']
 
         with client.start_session() as session:
             session.start_transaction()
-            users.update_one({"email": user.id}, {"$set" : user.to_dict()})
+            user = users.update_one({"_id": ObjectId(id)}, {"$set" : user.to_dict()})
+            session.commit_transaction()
+                
+        client.close()
