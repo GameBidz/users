@@ -1,8 +1,6 @@
-class User:
-    def __init__(self, username, email, password) -> None:
-        self.username = username
-        self.email = email
-        self.password = password
+from pydantic import BaseModel
 
-    def to_dict(self) -> dict:
-        return dict(username=self.username, email=self.email, password=self.password)
+class User(BaseModel):
+    username: str
+    email: str
+    password: str
