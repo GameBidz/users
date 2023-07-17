@@ -1,5 +1,5 @@
-from app.models.user_model import User
-from app.config.database import create_connection
+from models.user_model import User
+from config.database import create_connection
 from dotenv import load_dotenv
 import os
 from bson.objectid import ObjectId
@@ -24,7 +24,7 @@ class UserRepository:
             users = db['users']
 
             #Insertar el nuevo usuario
-            user = users.insert_one(new_user.to_dict(), session=session).inserted_id
+            user_id = users.insert_one(new_user.model_dump(), session=session).inserted_id
 
             #Confirmar la transacción
             session.commit_transaction()
@@ -32,7 +32,7 @@ class UserRepository:
             #Cerrar la conexión
             client.close()
 
-            return user
+            return user_id
         
     def get_user_by_username(self, username : str):
         client = create_connection()
@@ -59,7 +59,7 @@ class UserRepository:
 
         with client.start_session() as session:
             session.start_transaction()
-            user = users.update_one({"_id": ObjectId(id)}, {"$set" : user.to_dict()})
+            user = users.update_one({"_id": ObjectId(id)}, {"$set" : user.model_dump()})
             session.commit_transaction()
                 
         client.close()
