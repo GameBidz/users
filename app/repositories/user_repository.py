@@ -33,6 +33,15 @@ class UserRepository:
             client.close()
 
             return user
+        
+    def get_user_by_username(self, username : str):
+        client = create_connection()
+        db = client[DB_NAME]
+        users = db['users']
+        user = users.find_one({"username": username})
+        client.close()
+        return user
+
     
 
     def get_user_by_email(self, email:str):
@@ -40,6 +49,7 @@ class UserRepository:
         db = client[DB_NAME]
         users = db['users']
         user = users.find_one({"email": email})
+        client.close()
         return user
 
     def edit_user(self, id: str,  user: User):
