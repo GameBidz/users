@@ -1,5 +1,6 @@
 from repositories.user_repository import UserRepository
-from flask_bcrypt import generate_password_hash
+from flask_bcrypt import generate_password_hash, check_password_hash
+from models.user_model import User
 
 class UserService:
     def __init__(self) -> None:
@@ -20,5 +21,19 @@ class UserService:
         user = self.user_repository.create_user(username, email, hashed_password)
 
         return user
+    
+    def login(self, username, password):
+
+        user = self.user_repository.get_user_by_username(username)
+
+        #validacion de usuario existente
+        if user:
+            pass_candidate = password
+            if check_password_hash(user['password'], pass_candidate):
+                return user
+            return None
+        
+        #Usuario no existe
+        return None
 
 
