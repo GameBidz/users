@@ -42,8 +42,6 @@ class UserRepository:
         client.close()
         return user
 
-    
-
     def get_user_by_email(self, email:str):
         client = create_connection()
         db = client[DB_NAME]

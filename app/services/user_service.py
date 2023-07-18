@@ -1,4 +1,4 @@
-from app.repositories.user_repository import UserRepository
+from repositories.user_repository import UserRepository
 from flask_bcrypt import generate_password_hash
 
 class UserService:
