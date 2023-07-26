@@ -1,6 +1,13 @@
 from repositories.user_repository import UserRepository
 from flask_bcrypt import generate_password_hash, check_password_hash
-from models.user_model import User
+from dotenv import load_dotenv
+import datetime
+import jwt
+import os
+
+load_dotenv()
+
+SECRET_KEY = os.environ['SECRET_KEY']
 
 class UserService:
     def __init__(self) -> None:
@@ -30,10 +37,20 @@ class UserService:
         if user:
             pass_candidate = password
             if check_password_hash(user['password'], pass_candidate):
-                return user
-            return None
+                token = self.generate_token(user['username'])
+                return {"token": token}
         
-        #Usuario no existe
+        #Usuario no existe o credenciales invalidas
         return None
+    
+    def generate_token(self, username: str) -> str:
+        payload = {
+            'username': username,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+        }
+
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        return token
+
 
 

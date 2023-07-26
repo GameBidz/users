@@ -15,8 +15,6 @@ class UserController:
     def login(self, username, password):
         login_user = self.user_service.login(username, password)
         if login_user:
-            print(login_user)
-            login_user['_id'] = str(login_user['_id'])
             return login_user
         raise HTTPException(status_code=401, detail='Invalid Credentials')
 
