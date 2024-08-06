@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyz
+*.pyw
+*.pyi
+*.pyproj
+*.egg-info/
+dist/
+build/
+*.egg
+*.whl
+
+# Poetry
+.poetry/
+.poetry.lock
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Miscellaneous
+*.bak
+*.swp
+*.tmp
+*.log
+*.cache
+*.DS_Store
